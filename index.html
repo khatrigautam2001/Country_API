@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <video autoplay muted loop id="myvideo">
+            <source src="video.mp4" type="video/mp4">
+        </video>
+
+        <div class="content">
+            <h1 class="heading">Country Details</h1>
+            <h3>Enter the Country Name</h3>
+            <input type="text" id="country-input" placeholder="Enter the country name">
+            <button class="send-btn" onclick="countryFunction()">Send</button>
+            <br>
+            <img class="image" src="" alt="flag image" id="image">
+            <p id="capital">Capital:- Enter the country first</p>
+            <p id="currency">Currency:- ${data.symbol}</p>
+            <p id="population">Population:- ${data.population}</p>
+        </div>
+    </div>
+    <!-- <div>
+        <p id="para"></p>
+    </div> -->
+
+    <script>
+        function countryFunction(){
+            var countryInput = document.getElementById('country-input').value;
+            var apiUrl = `https://restcountries.eu/rest/v2/name/${countryInput}`;
+            const request = new XMLHttpRequest();
+            request.open('GET',apiUrl);
+            request.send();
+
+            request.addEventListener('load', function(){
+                const [data] = JSON.parse(this.responseText);
+        
+                const capital = document.getElementById('capital');
+                capital.innerHTML = `Capital:- ${data.capital}`;
+
+                const currency = document.getElementById('currency');
+                currency.innerHTML = `Currency:- ${data.currencies[0].symbol}`;
+
+                const population = document.getElementById('population');
+                population.innerHTML = `Population:- ${data.population}`;
+
+
+                const image = document.getElementById('image');
+                image.setAttribute('src',`${data.flag}`)
+            }) 
+        }
+    </script>
+</body>
+</html>
